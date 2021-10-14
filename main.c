@@ -93,6 +93,7 @@ int main(void)
   int i = 0;
   int flag = 0;
   int flag_light = 0;
+	int flag_touch = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -101,28 +102,29 @@ int main(void)
   {
 	  if (!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
 	  {
-			HAL_Delay(200);
-			if (!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
-			{
+			flag_touch = 0;
 				if (flag)
 				{
 					i++;
-					if (i >= 160000)
+					if (i >= 1600000)
 					{
 						flag = 0;
 						flag_light = 1;
 					}
 				}
-			}
 	  }
-	  if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
+	  else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
 	  {
-		  HAL_Delay(200);
+		  HAL_Delay(20);
 		  if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
 		  {
 			  flag = 1;
 			  i = 0;
-			  count++;
+				if(!flag_touch)
+				{
+					count++;
+				}
+				flag_touch = 1;
 		  }
 	  }
 	  if (flag_light)
@@ -136,6 +138,7 @@ int main(void)
 		  }
 		  flag_light = 0;
 			count = 0;
+			i = 0;
 	  }
     /* USER CODE END WHILE */
 
