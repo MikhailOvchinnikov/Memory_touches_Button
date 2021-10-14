@@ -98,35 +98,61 @@ int main(void)
   {
 		if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
 		{
-			HAL_Delay(100);
+			HAL_Delay(5);
 			if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
-			{
-				int count = 1;
-				int i = 0;
-				while(i < 1600000)
-				{
-					if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
+			{	
+				HAL_Delay(5);
+				if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
+				{	
+					int count = 0;
+					int i = 0;
+					while(i < 1600000)
 					{
-						while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13));
-						count = count + 1;
-						i = -1;
+						if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
+						{
+							HAL_Delay(5);
+							if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
+							{	
+								HAL_Delay(5);
+								if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
+								{	
+									while(1)
+									{
+										if(!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
+										{
+											HAL_Delay(5);
+											if(!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
+											{
+												HAL_Delay(5);
+												if(!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13))
+												{	
+													count = count + 1;
+													break;
+												}
+											}
+										}
+									}
+									i = -1;
+								}
+							}
+						}
+						i++;
 					}
-					i++;
+					for(int k = 0; k < count;k++)
+					{
+						HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+						HAL_Delay(500);
+						HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+						HAL_Delay(500);
+					}
+					HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
 				}
-				for(int k = 0; k < count;k++)
-				{
-					HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
-					HAL_Delay(500);
-					
-					
-				}
-				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
 			}
-		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+			}
+		}
   /* USER CODE END 3 */
 }
 
